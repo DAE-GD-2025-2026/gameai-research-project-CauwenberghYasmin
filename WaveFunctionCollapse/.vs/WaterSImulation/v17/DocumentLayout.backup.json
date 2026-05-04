@@ -1,0 +1,133 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\DaeSchool\\IMPORTANT\\OwnProg\\WaterSImulation\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4AB27ED9-1E01-46CA-8EB6-65E70DDF73B1}|WaterSImulation.vcxproj|C:\\DaeSchool\\IMPORTANT\\OwnProg\\WaterSImulation\\ball.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4AB27ED9-1E01-46CA-8EB6-65E70DDF73B1}|WaterSImulation.vcxproj|solutionrelative:ball.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AB27ED9-1E01-46CA-8EB6-65E70DDF73B1}|WaterSImulation.vcxproj|C:\\DaeSchool\\IMPORTANT\\OwnProg\\WaterSImulation\\ball.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4AB27ED9-1E01-46CA-8EB6-65E70DDF73B1}|WaterSImulation.vcxproj|solutionrelative:ball.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AB27ED9-1E01-46CA-8EB6-65E70DDF73B1}|WaterSImulation.vcxproj|C:\\DaeSchool\\IMPORTANT\\OwnProg\\WaterSImulation\\WaterSImulation.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4AB27ED9-1E01-46CA-8EB6-65E70DDF73B1}|WaterSImulation.vcxproj|solutionrelative:WaterSImulation.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:132:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ball.cpp",
+              "DocumentMoniker": "C:\\DaeSchool\\IMPORTANT\\OwnProg\\WaterSImulation\\ball.cpp",
+              "RelativeDocumentMoniker": "ball.cpp",
+              "ToolTip": "C:\\DaeSchool\\IMPORTANT\\OwnProg\\WaterSImulation\\ball.cpp",
+              "RelativeToolTip": "ball.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-01-22T14:49:10.373Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ball.h",
+              "DocumentMoniker": "C:\\DaeSchool\\IMPORTANT\\OwnProg\\WaterSImulation\\ball.h",
+              "RelativeDocumentMoniker": "ball.h",
+              "ToolTip": "C:\\DaeSchool\\IMPORTANT\\OwnProg\\WaterSImulation\\ball.h",
+              "RelativeToolTip": "ball.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-01-22T14:46:50.158Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "WaterSImulation.cpp",
+              "DocumentMoniker": "C:\\DaeSchool\\IMPORTANT\\OwnProg\\WaterSImulation\\WaterSImulation.cpp",
+              "RelativeDocumentMoniker": "WaterSImulation.cpp",
+              "ToolTip": "C:\\DaeSchool\\IMPORTANT\\OwnProg\\WaterSImulation\\WaterSImulation.cpp",
+              "RelativeToolTip": "WaterSImulation.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-01-22T11:32:54.402Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 1430,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{f2e84780-2af1-11d1-a7fa-00a0c9110051}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{90243340-bd7a-11d0-93ef-00a0c90f2734}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{0504ff91-9d61-11d0-a794-00a0c9110051}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{4a18f9d0-b838-11d0-93eb-00a0c90f2734}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e62ce6a0-b439-11d0-a79d-00a0c9110051}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{37aba9be-445a-11d3-9949-00c04f68fd0a}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
