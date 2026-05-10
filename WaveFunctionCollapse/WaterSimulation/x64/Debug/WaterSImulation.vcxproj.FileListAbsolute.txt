@@ -1,3 +1,6 @@
 C:\DaeSchool\IMPORTANT\OwnProg\WaterSImulation\x64\Debug\raylib.dll
 C:\DaeSchool\IMPORTANT\OwnProg\WaterSImulation\x64\Debug\glfw3.dll
 C:\DaeSchool\IMPORTANT\OwnProg\WaterSImulation\WaterSimulation\x64\Debug\WaterSIm.C9A25D59.Up2Date
+C:\DaeSchool\DaeYear02Semester02\gameai-research-project-CauwenberghYasmin\WaveFunctionCollapse\x64\Debug\raylib.dll
+C:\DaeSchool\DaeYear02Semester02\gameai-research-project-CauwenberghYasmin\WaveFunctionCollapse\x64\Debug\glfw3.dll
+C:\DaeSchool\DaeYear02Semester02\gameai-research-project-CauwenberghYasmin\WaveFunctionCollapse\WaterSimulation\x64\Debug\WaterSIm.C9A25D59.Up2Date
