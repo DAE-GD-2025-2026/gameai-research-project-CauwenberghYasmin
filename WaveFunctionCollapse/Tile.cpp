@@ -8,6 +8,11 @@ Tile::Tile(int tileN) noexcept:
 {
     connections.reserve(4);
     possibilities.reserve(16);
+    
+    for (int i = 1; i <= 16; i++)
+    {
+        possibilities.push_back(i);
+    }
 }
 
 
@@ -71,7 +76,7 @@ Tile* Tile::FindTileWithGridPos(std::vector<Tile>& screenTiles, GridPos pos)
 
 int Tile::GiveRandTileOption()
 {
-    int sizeArray {possibilities.size()}; //make sure when taking poss away to remove them fully from the vector
+    int sizeArray { static_cast<int>(possibilities.size())}; //make sure when taking poss away to remove them fully from the vector
     int randNumber {rand()% sizeArray};
     return possibilities[randNumber];
 }

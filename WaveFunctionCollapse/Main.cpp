@@ -2,9 +2,12 @@
 #include <iostream>
 #include <vector>
 #include "Tile.h"
+#include <string>
 
 void DrawLines(int screenWidth);
 void ReserveTiles(std::vector<Tile>& allTiles);
+void Grids(int screenWidth, std::vector<Tile>& screenTiles);
+void LoadTileTextures(std::vector<Texture2D>& tilesTextures);
 
 int main()
 {
@@ -12,30 +15,42 @@ int main()
     constexpr int screenWidth = 792 ;
     constexpr int screenHeight = 792 + 100;
     std::vector<Tile> allTiles;
+    std::vector<Tile> screenTiles;
 
 
     InitWindow(screenWidth, screenHeight, "Wave collapse Function");
     SetTargetFPS(60);
     
     Texture2D TileSet =  LoadTexture("Resources/tileset.png");
+    std::vector<Texture2D> tilesTextures;
 
 
     while (!WindowShouldClose())
     {
-    
+        if (tilesTextures.empty())
+        {
+             LoadTileTextures(tilesTextures);
+        }
         BeginDrawing();
         ClearBackground(darkBlue);
         
         DrawTextureEx(TileSet, Vector2 {0,0}, 0, 6, WHITE);  //make actual tile scale 3!
         DrawLines(screenWidth);
         ReserveTiles(allTiles);
-        
+        Grids(screenWidth, screenTiles);
         
         //register clicks
         //click button (reset and solve!)
         //don't draw lines anymore!
         
+        //try drawing
+        for (const auto& tile : screenTiles) //cant scale rectangles of specific drawings, so have to save rect images seperatly
+        {
+            //DrawTextureEx(TileSet, tile.position, 0, 0.8, WHITE);
+            DrawTextureEx(tilesTextures[0], tile.position, 0, 3, WHITE); 
+        }
         
+      
     
         EndDrawing();
     }
@@ -185,13 +200,32 @@ void Grids(int screenWidth, std::vector<Tile>& screenTiles)
     {
         for (int j =0; j < gridLength; j++)
         {
+            Tile tile = Tile(0);
+            
             //grid.pos.x = i*gridSize;
             //grid.pos.y = j*gridSize;
+            tile.position.x = static_cast<int>(i * gridSize);
+            tile.position.y = static_cast<int>(j*gridSize);
             
-            //make tile and give it a locaton:
             //tile.gridPos = (i,j)
-            //tile.create instance + set enthropy to 16
+            tile.gridPOsition = GridPos(i, j);
+            
+            //enthropy/possibilities is already set.
+            
             //push tile to screenTiles
+            screenTiles.emplace_back(tile);
         }
+    }
+}
+
+void LoadTileTextures(std::vector<Texture2D>& tilesTextures)
+{
+    for (int i =1; i <= 16; i++)
+    {
+        std::string filepath{"Resources/Layer "};
+        std::string number {std::to_string(i)};
+        std::string fileName {filepath + number+ ".png"};
+        std::cout<<fileName<<std::endl;
+        tilesTextures.emplace_back(LoadTexture("fileName"));
     }
 }
