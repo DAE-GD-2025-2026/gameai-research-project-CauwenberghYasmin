@@ -222,7 +222,7 @@ void LoadTileTextures(std::vector<Texture2D>& tilesTextures)
 {
     for (int i =1; i <= 16; i++)
     {
-        std::string filepath{"Resources/Layer "};
+        std::string filepath{"Resources/layer"};
         std::string number {std::to_string(i)};
         std::string fileName {filepath + number+ ".png"};
         std::cout<<fileName<<std::endl;
