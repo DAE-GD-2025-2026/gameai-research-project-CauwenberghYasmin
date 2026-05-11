@@ -46,11 +46,12 @@ public:
 	Vector2 position{};
 	GridPos gridPOsition{};
 	
-	Tile* GetNorthNeighbor(int gridSize,  std::vector<Tile>& screenTiles);
+	std::vector<Tile*> GetAllNeighbours(int gridSize,  std::vector<Tile>& screenTiles);
 	Tile* GetEastNeighbor(int gridSize,  std::vector<Tile>& screenTiles);
 	Tile* GetSouthNeighbor(int gridSize,  std::vector<Tile>& screenTiles);
 	Tile* GetWestNeighbor(int gridSize,  std::vector<Tile>& screenTiles);
 	int GiveRandTileOption(); //give rand enthropy tile to use + set own enthorpy to 0 
+	void Reset();
 	
 private:
 	
