@@ -11,26 +11,32 @@ void ReserveTiles(std::vector<Tile>& allTiles);
 void Grids(int screenWidth, std::vector<Tile>& screenTiles);
 void LoadTileTextures(std::vector<Texture2D>& tilesTextures);
 Tile* GetLowestEnthropy(std::vector<Tile>& screenTiles);
+bool ClickedInside(Texture2D image, Vector2 drawPosition);
 
 int main()
 {
-    constexpr int screenWidth = 792 ;
+    constexpr int screenWidth = 792;
     constexpr int screenHeight = 792 + 100;
+    
     std::vector<Tile> allTiles;
     std::vector<Tile> screenTiles;
 
     bool isDoneGenerating {false};
+    bool isDrawingBeginScreen{true};
     constexpr int gridSize = 8;
 
     InitWindow(screenWidth, screenHeight, "Wave collapse Function");
     SetTargetFPS(60);
     
     Texture2D TileSet =  LoadTexture("Resources/tileset.png");
+    Texture2D resetButton =  LoadTexture("Resources/Reset.png");
+    Texture2D cretaeButton =  LoadTexture("Resources/Create.png");
     std::vector<Texture2D> tilesTextures;
     
 
     while (!WindowShouldClose())
     {
+        
         if (tilesTextures.empty())
         {
              LoadTileTextures(tilesTextures);
@@ -39,74 +45,99 @@ int main()
         constexpr Color darkBlue = { 10, 10, 43, 255 };
         ClearBackground(darkBlue);
         
-        DrawTextureEx(TileSet, Vector2 {0,0}, 0, 6, WHITE);  //make actual tile scale 3!
-        DrawLines(screenWidth);
-        ReserveTiles(allTiles);
-        Grids(screenWidth, screenTiles);
-        
-        //register clicks
-        //click button (reset and solve!)
-        //don't draw lines anymore!
-       
-   
-      
-        std::stack<Tile*> stack;
+        if (isDrawingBeginScreen)
+        {
+            DrawTextureEx(TileSet, Vector2 {0,0}, 0, 6, WHITE);  //make actual tile scale 3
+            DrawLines(screenWidth);
+        }
+        // DrawTextureEx(resetButton, Vector2{screenWidth/6, screenHeight - 100, } , 0, 1, WHITE); 
+        DrawTextureEx(cretaeButton, Vector2{ screenWidth/2, screenHeight - 100, } , 0, 1, WHITE); 
+        //check drawing buttons
         
         if (!isDoneGenerating)
         {
-            //wavefunction collapse
-            int randNumber {GetRandomValue(0, screenTiles.size()-1)}; 
-            stack.push(&screenTiles[randNumber]);
+            ReserveTiles(allTiles);
+            Grids(screenWidth, screenTiles);
+        }
+    
+        
+        //if press reset button:
+        // if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ClickedInside(resetButton, Vector2{screenWidth/6, screenHeight - 100, }) )
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ClickedInside(cretaeButton, Vector2{ screenWidth/2, screenHeight - 100, } ) )
+         {
+             isDrawingBeginScreen = true;
+             isDoneGenerating = false;
+             std::cout<<"resetting\n";
             
-            //soon this but then pick lowest entrhopy + std::vector != 0!!!!
-            
-            
-            while (GetLowestEnthropy(screenTiles) != nullptr) //working with stack, maybe better by checking which of map lowest enthropy and != 0??
+            for (auto& tile: screenTiles)
             {
-                Tile* currentTile = GetLowestEnthropy(screenTiles);
+                tile.Reset();
+            }
+         }
+    
+        {
+            //std::cout<<"generating!\n";
+            std::stack<Tile*> stack;
+            if (!isDoneGenerating)
+            {
+                //wavefunction collapse
+                int randNumber {GetRandomValue(0, screenTiles.size()-1)}; 
+                stack.push(&screenTiles[randNumber]);
                 
-                int randPossibility {GetRandomValue(0, currentTile->possibilities.size()-1)};
-                int chosenTile = currentTile->possibilities[randPossibility];
-                DrawTextureEx(tilesTextures[chosenTile-1], currentTile->position, 0, 3, WHITE);
-                currentTile->tileInstanceNumber = chosenTile;
-                currentTile->possibilities.clear();
+                //soon this but then pick lowest entrhopy + std::vector != 0!!!!
                 
-                std::vector<Tile*> neighbours = currentTile->GetAllNeighbours(gridSize, screenTiles);
                 
-                for (int i = 0; i < neighbours.size(); i++) //need raw forloop for the numbering!
+                while (GetLowestEnthropy(screenTiles) != nullptr) //working with stack, maybe better by checking which of map lowest enthropy and != 0??
                 {
-                    if (neighbours[i] != nullptr && neighbours[i]->possibilities.size() != 0) //here go over all neighbours
+                    Tile* currentTile = GetLowestEnthropy(screenTiles);
+                    
+                    int randPossibility {GetRandomValue(0, currentTile->possibilities.size()-1)};
+                    int chosenTile = currentTile->possibilities[randPossibility];
+                    DrawTextureEx(tilesTextures[chosenTile-1], currentTile->position, 0, 3, WHITE);
+                    currentTile->tileInstanceNumber = chosenTile;
+                    currentTile->possibilities.clear();
+                    
+                    std::vector<Tile*> neighbours = currentTile->GetAllNeighbours(gridSize, screenTiles);
+                    
+                    for (int i = 0; i < neighbours.size(); i++) //need raw forloop for the numbering!
                     {
-                        std::vector<int> directionPossibleTiles = allTiles[chosenTile-1].connections[i].tiles;  //check what the original options are (north of this tile without restrictions)
-                        int enthropy {static_cast<int>(neighbours[i]->possibilities.size())}; //seeing what the direction can still be!
-                        std::vector<int> limitedTiles {neighbours[i]->possibilities};
-                        
-                        std::vector<int> overlappingTiles;
-                        
-                        std::sort(directionPossibleTiles.begin(), directionPossibleTiles.end());
-                        std::sort(limitedTiles.begin(), limitedTiles.end());
-                        
-                        std::set_intersection(
-                            directionPossibleTiles.begin(), directionPossibleTiles.end(),
-                            limitedTiles.begin(), limitedTiles.end(),
-                            std::back_inserter(overlappingTiles)
-                        );
-                        
-                        neighbours[i]->possibilities = overlappingTiles;
-                        int enthropyAfter {static_cast<int>(neighbours[i]->possibilities.size())};
+                        if (neighbours[i] != nullptr && neighbours[i]->possibilities.size() != 0) //here go over all neighbours
+                        {
+                            std::vector<int> directionPossibleTiles = allTiles[chosenTile-1].connections[i].tiles;  //check what the original options are (north of this tile without restrictions)
+                            int enthropy {static_cast<int>(neighbours[i]->possibilities.size())}; //seeing what the direction can still be!
+                            std::vector<int> limitedTiles {neighbours[i]->possibilities};
+                            
+                            std::vector<int> overlappingTiles;
+                            
+                            std::sort(directionPossibleTiles.begin(), directionPossibleTiles.end());
+                            std::sort(limitedTiles.begin(), limitedTiles.end());
+                            
+                            std::set_intersection(
+                                directionPossibleTiles.begin(), directionPossibleTiles.end(),
+                                limitedTiles.begin(), limitedTiles.end(),
+                                std::back_inserter(overlappingTiles)
+                            );
+                            
+                            neighbours[i]->possibilities = overlappingTiles;
+                            int enthropyAfter {static_cast<int>(neighbours[i]->possibilities.size())};
+                        }
                     }
                 }
             }
+            isDoneGenerating = true;
+            isDrawingBeginScreen = false;
         }
-        isDoneGenerating = true;
         
-        for (auto& tile: screenTiles)
+        
+        if (isDoneGenerating)
         {
-            if( tile.tileInstanceNumber > 0)
+            for (auto& tile: screenTiles)
             {
-                DrawTextureEx(tilesTextures[tile.tileInstanceNumber -1], tile.position, 0, 3, WHITE);
+                if( tile.tileInstanceNumber > 0)
+                {
+                    DrawTextureEx(tilesTextures[tile.tileInstanceNumber -1], tile.position, 0, 3, WHITE);
+                }
             }
-
         }
         
         
@@ -115,6 +146,23 @@ int main()
 
     CloseWindow();
 }
+
+bool ClickedInside(Texture2D image, Vector2 drawPosition)
+{
+    Vector2 mousePosition = GetMousePosition();
+    
+    
+    if (
+        mousePosition.x >= drawPosition.x && mousePosition.x <= drawPosition.x + image.width &&
+        mousePosition.y >= drawPosition.y && mousePosition.y <= drawPosition.y + image.height)
+    {
+        return true;
+    }
+    
+    
+    return false;
+}
+
 
 void DrawLines(int screenWidth)
 {
