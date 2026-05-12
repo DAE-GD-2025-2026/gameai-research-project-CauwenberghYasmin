@@ -94,11 +94,6 @@ int main()
             std::stack<Tile*> stack;
             if (!isDoneGenerating)
             {
-                //-------------------------------------
-                // ReserveTiles(allTiles);
-                // Grids(screenWidth, screenTiles);
-                //-------------------------------------
-                
                 //wavefunction collapse
                 int randNumber {GetRandomValue(0, screenTiles.size()-1)}; 
                 stack.push(&screenTiles[randNumber]);
@@ -115,16 +110,14 @@ int main()
                     
                     std::vector<Tile*> neighbours = currentTile->GetAllNeighbours(gridSize, screenTiles);
                     
-                    for (int i = 0; i < neighbours.size(); i++) //need raw forloop for the numbering!
+                    for (int i = 0; i < neighbours.size(); i++) //need raw forloop for the numbering in directions! 
                     {
-                        if (neighbours[i] != nullptr && neighbours[i]->possibilities.size() != 0) //here go over all neighbours
+                        if (neighbours[i] != nullptr && neighbours[i]->possibilities.size() != 0) //here go over all neighbours (except for the ones that have already collapsed)
                         {
                             std::vector<int> directionPossibleTiles = allTiles[chosenTile-1].connections[i].tiles;  //check what the original options are (north of this tile without restrictions)
-                            int enthropy {static_cast<int>(neighbours[i]->possibilities.size())}; //seeing what the direction can still be!
-                            std::vector<int> limitedTiles {neighbours[i]->possibilities};
+                            std::vector<int> limitedTiles {neighbours[i]->possibilities};//seeing what the direction can still be!
                             
                             std::vector<int> overlappingTiles;
-                            
                             std::sort(directionPossibleTiles.begin(), directionPossibleTiles.end());
                             std::sort(limitedTiles.begin(), limitedTiles.end());
                             
@@ -134,8 +127,7 @@ int main()
                                 std::back_inserter(overlappingTiles)
                             );
                             
-                            neighbours[i]->possibilities = overlappingTiles;
-                            int enthropyAfter {static_cast<int>(neighbours[i]->possibilities.size())};
+                            neighbours[i]->possibilities = overlappingTiles; //update the new possibilities
                         }
                     }
                 }
