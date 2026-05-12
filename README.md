@@ -1,8 +1,8 @@
 WAVE FUNCTION COLLAPSE
 
-The wave function collapse sounds like a very intimidating algorithm. You might be inclined to think you have to graduate with a masters in physics to comprehend this wizardy but do not worry, this is actually a very simple algoritm!
+The wave function collapse sounds like a very intimidating algorithm. You might be inclined to think you have to graduate with a masters in physics to comprehend this wizardy but do not worry, this is actually a very simple algorithm!
 
-For those of you who have never heard of the wave collapse function (of WFC for short) before, I'll give you a very short definition.
+For those of you who have never heard of the wave collapse function (or WFC) before, I'll give you a very short definition.
 The goal is to insert a tileset like this: 
 
 <img width="634" height="626" alt="image" src="https://github.com/user-attachments/assets/a8d662d3-8a47-439a-8894-6302414a486c" />
@@ -18,19 +18,19 @@ let's take this tileset for example:
 
 <img width="551" height="552" alt="image" src="https://github.com/user-attachments/assets/83a966f4-ccaa-4f52-9161-199f93195d1f" />
 
-we want to generate a beautiful map consisent of these tiles. But not everything can be placed next to eachother! if we make a grid and just randomize tiles for each spot, this could be a result:
+we want to generate a beautiful map consisent of these tiles. But not everything can be placed next to eachother! If we make a grid and just randomize tiles for each spot, this could be a result:
 
 <img width="786" height="796" alt="image" src="https://github.com/user-attachments/assets/e0d9fda7-1218-46cb-9394-b7f092a5eb54" />
 
-What a chaos! We certaintly don't want that. So instead, we will start to make some 'rules' or 'connections'.
+What a chaos! We certaintly don't want that. So instead, we will start to make some 'constraints' or 'connections' like I like to call them.
 
 <img width="789" height="796" alt="image" src="https://github.com/user-attachments/assets/b93112ab-66ec-46cf-94c5-9482feeab479" />
 
-Now we start to puzzle. for us it's clear that we can't have flying barrels in the game, but our computer doesn't know that yet.
+Now we start to puzzle. for us it's clear that you can't have flying barrels in the map, but our computer doesn't know that yet.
 
 <img width="758" height="124" alt="image" src="https://github.com/user-attachments/assets/eba6bfa4-d813-4a5c-84ff-e68569f7aed3" />
 
-So for every possible tile, we make connections. We write down what neighbours a specific tile can have in each direction. It's *very* important that this get's mirrored. 
+So for every possible tile, we make connections. We write down what neighbours a specific tile can have in each direction. It's *very* important that this get's mirrored;
 If a lantern can be north of a barrel, the barrel can be south of the lantern.
 Once you've done this correctly, the most difficult part is out of the way (I can speak of experience that taking out mistakes here is the most tedious part).
 
@@ -38,24 +38,24 @@ Great! Every tile has a neighbour now. So what is the next step?
 
 <img width="556" height="553" alt="image" src="https://github.com/user-attachments/assets/4dae5502-07e3-43f6-9351-7820e476921f" />
 
-We create a grid. any spot Since there are no restrictions yet, any spot can be taken by any tile. Each spot has 16 possibilities so to say, or has an enthropy of 16!
+We create a grid. Any spot since there are no restrictions yet, can be taken by any tile. Each spot has 16 possibilities or an enthropy of 16!
 We speak of a high enthropy if the spot has many different tile options (here it has the max, 16).
 
-If we fit a spot up like so:
+Let's take this example:
 <img width="552" height="553" alt="image" src="https://github.com/user-attachments/assets/7d4bd404-1ce7-46e7-9e6e-1807a51b1c8f" />
 
 We picked a starting spot and filled it up with a random tile from the possibilities (this is all chance calculated).
-Because this spot is filled now, the surrounding enthropy has changed. take the north side for example.
-We can put a barrel or a tree on top of it, maybe even a latern or just air. What we can't do on the other hand is put a rock right on top. That would look quiet weird wouldn't it?
+Because this spot is filled now, the surrounding enthropy has changed. Take the north side for example.
+We can put a barrel or a tree on top of it, maybe even a latern or just air. What we can't do on the other hand, is put a rock right on top. That would look quiet weird wouldn't it?
 
-The best course of action here is to update the neighbours accordingly. I reccomend each tile to have their own list of possibilities they can be. and once their entrhopy goes down, you update it!
+The best course of action here is to update the neighbours accordingly. I reccomend each tile to have their own list of possibilities. Once their entrhopy changes, you update it!
 <img width="1271" height="405" alt="image" src="https://github.com/user-attachments/assets/ba92e570-3770-447a-93ad-4b26725ab8d7" />
 
 This way each tile is aware of what their options still are.
 
-Now that's all left to do is to repeat this cycle! At the start, you should choose the tile with the lowest enthropy, this way you lower the chances of a conflict. You collapse this tile by choosing a random tile number of the possibilities and set the spritesheet. you update the neighbours and voila. you can start all over again untill all the tiles have a possibility list of 0.
+Now all that's left to do is to repeat this cycle. At the start, you should choose the tile with the lowest enthropy, this way you lower the chances of a conflicts. You collapse this tile by choosing a random tile number of the possibilities and set the spritesheet. You update the neighbours and voila. You can start all over again untill all the tiles have a possibility list with size 0.
 
-I can already feel you looking at me with this suspicious look. And I have to admit, you're right. There are chances of a conflict.
+I can already feel you looking at me with a suspicious look. And I have to admit, you're right. There are chances of a conflict.
 As the algorithm does its job, there is a chance a tile is left empty, mostly because a tile hasn't collapsed yet, but due to it's neighbours, doesn't have any possibilities left to choose from.
 
 There are 2 ways to solve this:
