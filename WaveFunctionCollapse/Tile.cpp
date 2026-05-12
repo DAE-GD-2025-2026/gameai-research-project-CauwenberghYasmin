@@ -118,6 +118,7 @@ int Tile::GiveRandTileOption()
 {
     int sizeArray { static_cast<int>(possibilities.size())}; //make sure when taking poss away to remove them fully from the vector
     int randNumber {GetRandomValue(0, sizeArray-1)};
+    
     return possibilities[randNumber];
 }
 

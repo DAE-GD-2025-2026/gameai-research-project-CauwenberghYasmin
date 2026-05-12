@@ -44,7 +44,7 @@ int main()
             Grids(screenWidth, screenTiles);
         }
         BeginDrawing();
-        constexpr Color darkBlue = { 10, 10, 43, 255 };
+        constexpr Color darkBlue = { 10, 10, 10, 255 };
         ClearBackground(darkBlue);
         
         if (isDrawingBeginScreen)
@@ -62,6 +62,9 @@ int main()
         
         if (!isDoneGenerating)
         {
+            allTiles.clear();
+            screenTiles.clear();
+            
             ReserveTiles(allTiles);
             Grids(screenWidth, screenTiles);
         }
@@ -85,8 +88,6 @@ int main()
              isDoneGenerating = true;
              std::cout<<"clicking reset button!";
         }
-        
-    
         
         {
             //std::cout<<"generating!\n";
@@ -151,6 +152,12 @@ int main()
                 if( tile.tileInstanceNumber > 0)
                 {
                     DrawTextureEx(tilesTextures[tile.tileInstanceNumber -1], tile.position, 0, 3, WHITE);
+                }
+                else
+                {
+                    {
+                        isDoneGenerating = false; //this is a security mesure, if this triggers, it means the algorithme got stuck, forcing it to recalculate everything from scratch (vs unwinding!)
+                    } //this is pretty much impossible with our tileset!
                 }
             }
         }
