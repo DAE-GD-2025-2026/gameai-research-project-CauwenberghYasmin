@@ -21,7 +21,7 @@ int main()
     std::vector<Tile> allTiles;
     std::vector<Tile> screenTiles;
 
-    bool isDoneGenerating {false};
+    bool isDoneGenerating {true};
     bool isDrawingBeginScreen{true};
     constexpr int gridSize = 8;
 
@@ -40,6 +40,8 @@ int main()
         if (tilesTextures.empty())
         {
              LoadTileTextures(tilesTextures);
+            ReserveTiles(allTiles);
+            Grids(screenWidth, screenTiles);
         }
         BeginDrawing();
         constexpr Color darkBlue = { 10, 10, 43, 255 };
@@ -49,44 +51,57 @@ int main()
         {
             DrawTextureEx(TileSet, Vector2 {0,0}, 0, 6, WHITE);  //make actual tile scale 3
             DrawLines(screenWidth);
+            std::cout<<"draw sceen at start!\n";
         }
-        // DrawTextureEx(resetButton, Vector2{screenWidth/6, screenHeight - 100, } , 0, 1, WHITE); 
+        DrawTextureEx(resetButton, Vector2{screenWidth/6, screenHeight - 100, } , 0, 1, WHITE); 
         DrawTextureEx(cretaeButton, Vector2{ screenWidth/2, screenHeight - 100, } , 0, 1, WHITE); 
         //check drawing buttons
+        
+        
+        //if press reset button:
         
         if (!isDoneGenerating)
         {
             ReserveTiles(allTiles);
             Grids(screenWidth, screenTiles);
         }
-    
         
-        //if press reset button:
-        // if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ClickedInside(resetButton, Vector2{screenWidth/6, screenHeight - 100, }) )
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ClickedInside(cretaeButton, Vector2{ screenWidth/2, screenHeight - 100, } ) )
          {
-             isDrawingBeginScreen = true;
+             isDrawingBeginScreen = false;
              isDoneGenerating = false;
-             std::cout<<"resetting\n";
+             std::cout<<"creating\n";
             
             for (auto& tile: screenTiles)
             {
                 tile.Reset();
             }
          }
+        
+        
+         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ClickedInside(resetButton, Vector2{screenWidth/6, screenHeight - 100, }) )
+        {
+             isDrawingBeginScreen = true;
+             isDoneGenerating = true;
+             std::cout<<"clicking reset button!";
+        }
+        
     
+        
         {
             //std::cout<<"generating!\n";
             std::stack<Tile*> stack;
             if (!isDoneGenerating)
             {
+                //-------------------------------------
+                // ReserveTiles(allTiles);
+                // Grids(screenWidth, screenTiles);
+                //-------------------------------------
+                
                 //wavefunction collapse
                 int randNumber {GetRandomValue(0, screenTiles.size()-1)}; 
                 stack.push(&screenTiles[randNumber]);
-                
-                //soon this but then pick lowest entrhopy + std::vector != 0!!!!
-                
-                
+
                 while (GetLowestEnthropy(screenTiles) != nullptr) //working with stack, maybe better by checking which of map lowest enthropy and != 0??
                 {
                     Tile* currentTile = GetLowestEnthropy(screenTiles);
@@ -123,13 +138,13 @@ int main()
                         }
                     }
                 }
+                isDrawingBeginScreen = false;
             }
-            isDoneGenerating = true;
-            isDrawingBeginScreen = false;
+                isDoneGenerating = true;
         }
         
         
-        if (isDoneGenerating)
+        if (isDoneGenerating && !isDrawingBeginScreen)
         {
             for (auto& tile: screenTiles)
             {
@@ -140,6 +155,12 @@ int main()
             }
         }
         
+        if (isDrawingBeginScreen)
+        {
+            DrawTextureEx(TileSet, Vector2 {0,0}, 0, 6, WHITE);  //make actual tile scale 3
+            DrawLines(screenWidth);
+            std::cout<<"DrawingBeginScreenCalled!";
+        }
         
         EndDrawing();
     }
