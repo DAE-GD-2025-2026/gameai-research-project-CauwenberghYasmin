@@ -1,8 +1,8 @@
 WAVE FUNCTION COLLAPSE
 
-The wave function collapse sounds like a very intimidating algorithm. You might be inclined to think you have to graduate with a masters in physics to comprehend this wizardy but do not worry, this is actually a very simple algorithm!
+The wave function collapse sounds like a very intimidating algorithm. You might be inclined to think you have to graduate with a masters in physics to comprehend this wizardry but do not worry, this is actually a very simple algorithm!
 
-For those of you who have never heard of the wave collapse function (or WFC) before, I'll give you a very short definition.
+For those of you who have never heard of the wave function collapse(or WFC) before, I'll give you a very short definition.
 The goal is to insert a tileset like this: 
 
 <img width="634" height="626" alt="image" src="https://github.com/user-attachments/assets/a8d662d3-8a47-439a-8894-6302414a486c" />
@@ -18,7 +18,7 @@ let's take this tileset for example:
 
 <img width="551" height="552" alt="image" src="https://github.com/user-attachments/assets/83a966f4-ccaa-4f52-9161-199f93195d1f" />
 
-we want to generate a beautiful map consisent of these tiles. But not everything can be placed next to eachother! If we make a grid and just randomize tiles for each spot, this could be a result:
+we want to generate a beautiful map consisting of these tiles. But not everything can be placed next to eachother! If we make a grid and just randomize tiles for each spot, this could be a result:
 
 <img width="786" height="796" alt="image" src="https://github.com/user-attachments/assets/e0d9fda7-1218-46cb-9394-b7f092a5eb54" />
 
@@ -46,9 +46,9 @@ Let's take this example:
 
 We picked a starting spot and filled it up with a random tile from the possibilities (this is all chance calculated).
 Because this spot is filled now, the surrounding enthropy has changed. Take the north side for example.
-We can put a barrel or a tree on top of it, maybe even a latern or just air. What we can't do on the other hand, is put a rock right on top. That would look quiet weird wouldn't it?
+We can put a barrel or a tree on top of it, maybe even a lantern or just air. What we can't do on the other hand, is put a rock right on top. That would look quite weird wouldn't it?
 
-The best course of action here is to update the neighbours accordingly. I reccomend each tile to have their own list of possibilities. Once their entrhopy changes, you update it!
+The best course of action here is to update the neighbours accordingly. I recommend each tile to have their own list of possibilities. Once their entrhopy changes, you update it!
 <img width="1271" height="405" alt="image" src="https://github.com/user-attachments/assets/ba92e570-3770-447a-93ad-4b26725ab8d7" />
 
 This way each tile is aware of what their options still are.
@@ -94,7 +94,7 @@ See here an example by CodingQuest that added extra weight to the water tiles!
 
 <img width="1321" height="740" alt="image" src="https://github.com/user-attachments/assets/afee6b7d-0e25-44b8-b353-ef448ca849de" />
  
-I think it's very important to highlight that this method is not only limited ot the 2d space. 
+I think it's very important to highlight that this method is not only limited to the 2d space. 
 See here an example by Uproom games:
 
 <img width="649" height="454" alt="image" src="https://github.com/user-attachments/assets/40a1976e-6188-40f7-af59-1fd6842e8a45" />
