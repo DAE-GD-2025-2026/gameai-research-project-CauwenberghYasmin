@@ -53,7 +53,7 @@ The best course of action here is to update the neighbours accordingly. I recomm
 
 This way each tile is aware of what their options still are.
 
-Now all that's left to do is to repeat this cycle. At the start, you should choose the tile with the lowest enthropy, this way you lower the chances of a conflicts. You collapse this tile by choosing a random tile number of the possibilities and set the spritesheet. You update the neighbours and voila. You can start all over again untill all the tiles have a possibility list with size 0.
+Now all that's left to do is to repeat this cycle. At the start, you should choose the tile with the lowest enthropy, this way you lower the chances of conflicts. You collapse this tile by choosing a random tile number of the possibilities and set the spritesheet. You update the neighbours and voila. You can start all over again untill all the tiles have a possibility list with size 0.
 
 I can already feel you looking at me with a suspicious look. And I have to admit, you're right. There are chances of a conflict.
 As the algorithm does its job, there is a chance a tile is left empty, mostly because a tile hasn't collapsed yet, but due to it's neighbours, doesn't have any possibilities left to choose from.
@@ -61,8 +61,8 @@ As the algorithm does its job, there is a chance a tile is left empty, mostly be
 There are 2 ways to solve this:
 
 1) You can always backtrack and keep trying again, surely you'll get there at some point.
-2) You discard all your changes and try again.
-Depending on your tileset and expectations, one might fit you better than the other. In my case, since the chance of miscalculations are so small, I decided to go with the second option,
+2) You discard all your changes and try again. Depending on your tileset and expectations, one might fit you better than       the other.
+   In my case, since the chance of miscalculations are so small, I decided to go with the second option.
 
 Now applying all of this to my project, here are some different results:
 
@@ -84,8 +84,11 @@ And this is actually very achievable!
 You can add weight to your tiles, so you can decide which ones will show up more frequently. If you decide to do this, it's very important that you calculate this in your enthropy:
 
 // Sums are over the weights of each remaining
+
 // allowed tile type for the square whose
+
 // entropy we are calculating.
+
 shannon_entropy_for_square =
   log(sum(weight)) -
   (sum(weight * log(weight)) / sum(weight))
