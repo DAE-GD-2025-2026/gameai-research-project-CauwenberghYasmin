@@ -42,6 +42,7 @@ We create a grid. Any spot since there are no restrictions yet, can be taken by 
 We speak of a high enthropy if the spot has many different tile options (here it has the max, 16).
 
 Let's take this example:
+
 <img width="552" height="553" alt="image" src="https://github.com/user-attachments/assets/7d4bd404-1ce7-46e7-9e6e-1807a51b1c8f" />
 
 We picked a starting spot and filled it up with a random tile from the possibilities (this is all chance calculated).
@@ -110,10 +111,15 @@ If you decide to try to implement this algorithm, I recommend going though the s
 
 Sources:
 Wave - by Oskar Stålberg. (n.d.). https://oskarstalberg.com/game/wave/wave.html
+
 CodingQuest. (2023, October 14). The Wave Function Collapse algorithm [Video]. YouTube. https://www.youtube.com/watch?v=qRtrj6Pua2A
+
 The Wavefunction Collapse Algorithm explained very clearly | Robert Heaton. (2018, December 17). Robert Heaton. https://robertheaton.com/2018/12/17/wavefunction-collapse-algorithm/
+
 Boris. (2025, February 28). Wave function collapse explained. BorisTheBrave.Com. https://www.boristhebrave.com/2020/04/13/wave-function-collapse-explained/
+
 Boris. (2025b, February 28). Wave Function Collapse tips and tricks. BorisTheBrave.Com. https://www.boristhebrave.com/2020/02/08/wave-function-collapse-tips-and-tricks/
+
 CodingQuest. (2023b, October 14). The Wave Function Collapse algorithm [Video]. YouTube. https://www.youtube.com/watch?v=qRtrj6Pua2A
 
 Tileset:
