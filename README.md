@@ -1,4 +1,4 @@
-#WAVE FUNCTION COLLAPSE
+# WAVE FUNCTION COLLAPSE
 
 The wave function collapse sounds like a very intimidating algorithm. You might be inclined to think you have to graduate with a masters in physics to comprehend this wizardry but do not worry, this is actually a very simple algorithm!
 
@@ -15,7 +15,7 @@ and then get this beautiful result:
 
 A vital part of this algorithm is defining neighbours!
 
-##Neighbours
+## Neighbours
 
 let's take this tileset for example:
 
@@ -39,7 +39,7 @@ Once you've done this correctly, the most difficult part is out of the way (I ca
 
 Great! Every tile has a neighbour now. So what is the next step?
 
-##Enthropy
+## Enthropy
 
 <img width="556" height="553" alt="image" src="https://github.com/user-attachments/assets/4dae5502-07e3-43f6-9351-7820e476921f" />
 
@@ -59,7 +59,7 @@ The best course of action here is to update the neighbours accordingly. I recomm
 
 This way each tile is aware of what their options still are.
 
-##The loop
+## The loop
 
 Now all that's left to do is to repeat this cycle. At the start, you should choose the tile with the lowest enthropy, this way you lower the chances of conflicts. You collapse this tile by choosing a random tile number of the possibilities and set the spritesheet. You update the neighbours and voila. You can start all over again untill all the tiles have a possibility list with size 0.
 
@@ -85,7 +85,7 @@ Now applying all of this to my project, here are some different results:
 
 <img width="787" height="886" alt="image" src="https://github.com/user-attachments/assets/60bcff48-43a2-4f0c-98ce-dc6c0484c02b" />
 
-##Variations
+## Variations
 
 So you might think to yourself 'wow amazing' and you apply this method to any of your games. There is a big chance that you wish your map had more trees, or less rocks. That's fair.
 And this is actually very achievable!
@@ -118,7 +118,7 @@ Or maybe even my favorite by Primarter:
 If you decide to try to implement this algorithm, I recommend going though the sources listed below and to write most of your code down on paper first (such as I did myself).
 
 
-#Sources:
+# Sources:
 Wave - by Oskar Stålberg. (n.d.). https://oskarstalberg.com/game/wave/wave.html
 
 CodingQuest. (2023, October 14). The Wave Function Collapse algorithm [Video]. YouTube. https://www.youtube.com/watch?v=qRtrj6Pua2A
