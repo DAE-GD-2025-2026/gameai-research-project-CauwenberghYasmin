@@ -1,3 +1,0 @@
-C:\DaeSchool\DaeYear02Semester02\gameai-research-project-CauwenberghYasmin\WaveFunctionCollapse\x64\Debug\raylib.dll
-C:\DaeSchool\DaeYear02Semester02\gameai-research-project-CauwenberghYasmin\WaveFunctionCollapse\x64\Debug\glfw3.dll
-C:\DaeSchool\DaeYear02Semester02\gameai-research-project-CauwenberghYasmin\WaveFunctionCollapse\WaterSimulation\x64\Debug\WaveColl.54ACE830.Up2Date
