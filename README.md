@@ -1,6 +1,6 @@
 # WAVE FUNCTION COLLAPSE
 
-The wave function collapse is a constraint-solving algorithms. This means that the algorithm will solve itself following specific defined rules. In this case it get's used for procedural generation. So by defining specific rules and using randomization you can 
+The wave function collapse is a constraint-solving algorithms. This means that the algorithm will solve itself following specific defined rules. In this case it is used for procedural generation. So by defining specific rules and using randomization you can 
 change generated tiles from this:
 
 <img width="634" height="626" alt="image" src="https://github.com/user-attachments/assets/a8d662d3-8a47-439a-8894-6302414a486c" />
@@ -9,7 +9,7 @@ to this by defining rules:
 
 <img width="607" height="613" alt="image" src="https://github.com/user-attachments/assets/a0e4aa87-817b-497e-8dbd-e440a0d6efb6" />
 
-This result is only achievable by defining neighbours.
+This outcome is achievable only through the formal definition of neighbor relationships.
 
 ## Neighbours
 
@@ -46,7 +46,7 @@ Let's take this example:
 
 We picked a starting spot and filled it up with a random tile from the possibilities (this is all chance calculated).
 Because this spot is filled now, the surrounding enthropy has changed. Take the north side for example.
-We can put a barrel or a tree on top of it, maybe even a lantern or just air. What we can't do on the other hand, is put a rock right on top. That would look quite weird wouldn't it?
+We can put a barrel or a tree on top of it, maybe even a lantern or just air. What we can't do on the other hand, is put a rock right on top.
 
 The best course of action here is to update the neighbours accordingly. I recommend each tile to have their own list of possibilities. Once their entrhopy changes, you update it!
 <img width="1271" height="405" alt="image" src="https://github.com/user-attachments/assets/ba92e570-3770-447a-93ad-4b26725ab8d7" />
@@ -55,15 +55,16 @@ This way each tile is aware of what their options still are.
 
 ## The loop
 
-Now all that's left to do is to repeat this cycle. At the start, you should choose the tile with the lowest enthropy, this way you lower the chances of conflicts. You collapse this tile by choosing a random tile number of the possibilities and set the spritesheet. You update the neighbours and voila. You can start all over again untill all the tiles have a possibility list with size 0.
+Now all that's left to do is to repeat this cycle. At the start, you should choose the tile with the lowest enthropy, this way you lower the chances of conflicts. You collapse this tile by choosing a random tile number of the possibilities and set the spritesheet. You update the neighbours and the basics are done. You can start all over again untill all the tiles have a possibility list with size 0.
 
-I can already feel you looking at me with a suspicious look. And I have to admit, you're right. There are chances of a conflict.
+Something to be wary about are the chances of a conflict.
 As the algorithm does its job, there is a chance a tile is left empty, mostly because a tile hasn't collapsed yet, but due to it's neighbours, doesn't have any possibilities left to choose from.
 
 There are 2 ways to solve this:
 
-1) You can always backtrack and keep trying again, surely you'll get there at some point.
-2) You discard all your changes and try again. Depending on your tileset and expectations, one might fit you better than       the other.
+1) You can always backtrack and regenerate the rest of the tiles untill all the tiles habe collapsed.
+   
+2) You discard all your changes and try again. Depending on your tileset and expectations, one might fit you better than the other.
    In my case, since the chance of miscalculations are so small, I decided to go with the second option.
 
 Now applying all of this to my project, here are some different results:
@@ -80,11 +81,10 @@ Now applying all of this to my project, here are some different results:
 <img width="787" height="886" alt="image" src="https://github.com/user-attachments/assets/60bcff48-43a2-4f0c-98ce-dc6c0484c02b" />
 
 ## Variations
+To further customize generation, such as increasing the frequency of trees or decreasing the appearance of rocks, you can implement tile weights. 
+By assigning weights, you can control which tiles are more likely to be selected during the collapse phase.
 
-So you might think to yourself 'wow amazing' and you apply this method to any of your games. There is a big chance that you wish your map had more trees, or less rocks. That's fair.
-And this is actually very achievable!
-
-You can add weight to your tiles, so you can decide which ones will show up more frequently. If you decide to do this, it's very important that you calculate this in your enthropy:
+If you decide to do this, it's very important that you make your calculations using the shannon-enthropy formula:
 
 // Sums are over the weights of each remaining
 
