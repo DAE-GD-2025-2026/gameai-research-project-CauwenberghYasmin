@@ -1,19 +1,15 @@
 # WAVE FUNCTION COLLAPSE
 
-The wave function collapse sounds like a very intimidating algorithm. You might be inclined to think you have to graduate with a masters in physics to comprehend this wizardry but do not worry, this is actually a very simple algorithm!
-
-For those of you who have never heard of the wave function collapse(or WFC) before, I'll give you a very short definition.
-The goal is to insert a tileset like this: 
+The wave function collapse is a constraint-solving algorithms. This means that the algorithm will solve itself following specific defined rules. In this case it get's used for procedural generation. So by defining specific rules and using randomization you can 
+change generated tiles from this:
 
 <img width="634" height="626" alt="image" src="https://github.com/user-attachments/assets/a8d662d3-8a47-439a-8894-6302414a486c" />
 
-and then get this beautiful result:
+to this by defining rules:
 
 <img width="607" height="613" alt="image" src="https://github.com/user-attachments/assets/a0e4aa87-817b-497e-8dbd-e440a0d6efb6" />
 
-"Magic" some might say, but I like to think otherwise.
-
-A vital part of this algorithm is defining neighbours!
+This result is only achievable by defining neighbours.
 
 ## Neighbours
 
@@ -21,23 +17,21 @@ let's take this tileset for example:
 
 <img width="551" height="552" alt="image" src="https://github.com/user-attachments/assets/83a966f4-ccaa-4f52-9161-199f93195d1f" />
 
-we want to generate a beautiful map consisting of these tiles. But not everything can be placed next to eachother! If we make a grid and just randomize tiles for each spot, this could be a result:
+we want to generate a map consisting of these tiles. But not everything can be placed next to eachother. If we make a grid and just randomize tiles for each spot, this could be a result:
 
 <img width="786" height="796" alt="image" src="https://github.com/user-attachments/assets/e0d9fda7-1218-46cb-9394-b7f092a5eb54" />
 
-What a chaos! We certaintly don't want that. So instead, we will start to make some 'constraints' or 'connections' like I like to call them.
+To get a closer result ot what we were expecting,  we will start to make some 'constraints' or 'connections'.
 
 <img width="789" height="796" alt="image" src="https://github.com/user-attachments/assets/b93112ab-66ec-46cf-94c5-9482feeab479" />
 
-Now we start to puzzle. for us it's clear that you can't have flying barrels in the map, but our computer doesn't know that yet.
+Now we start to puzzle. For us it's clear that you can't have flying barrels in the map, but our computer doesn't know that yet.
 
 <img width="758" height="124" alt="image" src="https://github.com/user-attachments/assets/eba6bfa4-d813-4a5c-84ff-e68569f7aed3" />
 
 So for every possible tile, we make connections. We write down what neighbours a specific tile can have in each direction. It's *very* important that this get's mirrored;
 If a lantern can be north of a barrel, the barrel can be south of the lantern.
-Once you've done this correctly, the most difficult part is out of the way (I can speak of experience that taking out mistakes here is the most tedious part).
-
-Great! Every tile has a neighbour now. So what is the next step?
+Once you've done this correctly, the most difficult part is out of the way.
 
 ## Enthropy
 
