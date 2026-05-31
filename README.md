@@ -3,7 +3,7 @@
 The wave function collapse is a constraint-solving algorithms. This means that the algorithm will solve itself following specific defined rules. In this case it is used for procedural generation. So by defining specific rules and using randomization you can 
 change generated tiles from this:
 
-<img width="634" height="626" alt="image" src="https://github.com/user-attachments/assets/a8d662d3-8a47-439a-8894-6302414a486c" />
+<img  height="526" alt="image" src="https://github.com/user-attachments/assets/a8d662d3-8a47-439a-8894-6302414a486c" />
 
 to this by defining rules:
 
