@@ -19,7 +19,8 @@ int indexCounter{0};
 int main()
 {
     constexpr int screenWidth = 792;
-    constexpr int screenHeight = 792 + 100;
+    constexpr int screenHeight = 792 + 300;
+    int drawSpeed {70};
     
     std::vector<std::vector<connect>> allTiles;
     std::vector<Tile> screenTiles;
@@ -33,10 +34,12 @@ int main()
     
     Texture2D TileSet =  LoadTexture("Resources/tileset.png");
     Texture2D resetButton =  LoadTexture("Resources/Reset.png");
-    Texture2D cretaeButton =  LoadTexture("Resources/Create.png");
+    Texture2D createButton =  LoadTexture("Resources/Create.png");
+    Texture2D plusIcon =  LoadTexture("Resources/Plus.png");
+    Texture2D minusIcon =  LoadTexture("Resources/Minus.png");
     std::vector<Texture2D> tilesTextures;
-    
     std::vector< Tile*> orderToDrawTiles{};
+
 
 
     while (!WindowShouldClose())
@@ -57,15 +60,14 @@ int main()
         {
             DrawTextureEx(TileSet, Vector2 {0,0}, 0, 6, WHITE);  //make actual tile scale 3
             DrawLines(screenWidth);
-            //std::cout<<"draw sceen at start!\n";
         }
-        DrawTextureEx(resetButton, Vector2{screenWidth/6, screenHeight - 100, } , 0, 1, WHITE); 
-        DrawTextureEx(cretaeButton, Vector2{ screenWidth/2, screenHeight - 100, } , 0, 1, WHITE); 
-        //check drawing buttons
-        
-        
-        //if press reset button:
-        
+        DrawTextureEx(resetButton, Vector2{screenWidth/6, screenHeight - 120, } , 0, 1, WHITE);
+        DrawTextureEx(createButton, Vector2{ screenWidth/2, screenHeight - 120, } , 0, 1, WHITE);
+
+        DrawText("SPEED:",  screenWidth/5, screenHeight - 220, 50, WHITE);
+        DrawTextureEx(plusIcon, Vector2{ screenWidth/2, screenHeight - 220, } , 0, 1, WHITE);
+        DrawTextureEx(minusIcon, Vector2{ screenWidth/2 + 80, screenHeight - 220, } , 0, 1, WHITE);
+
         if (!isDoneGenerating)
         {
             allTiles.clear();
@@ -74,26 +76,49 @@ int main()
             ReserveTiles(allTiles);
             Grids(screenWidth, screenTiles);
         }
-        
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ClickedInside(cretaeButton, Vector2{ screenWidth/2, screenHeight - 100, } ) )
-         {
-             isDrawingBeginScreen = false;
-             isDoneGenerating = false;
-             std::cout<<"creating\n";
-            
-            for (auto& tile: screenTiles)
+
+
+
+        { //checking button clicks!
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ClickedInside(createButton, Vector2{ screenWidth/2, screenHeight - 120, } ) )
             {
-                tile.Reset();
+                isDrawingBeginScreen = false;
+                isDoneGenerating = false;
+                std::cout<<"creating\n";
+
+                for (auto& tile: screenTiles)
+                {
+                    tile.Reset();
+                }
             }
-         }
-        
-        
-         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ClickedInside(resetButton, Vector2{screenWidth/6, screenHeight - 100, }) )
-        {
-             isDrawingBeginScreen = true;
-             isDoneGenerating = true;
-             std::cout<<"clicking reset button!";
+
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ClickedInside(resetButton, Vector2{screenWidth/6, screenHeight - 120, }) )
+            {
+                isDrawingBeginScreen = true;
+                isDoneGenerating = true;
+                std::cout<<"clicking reset button!";
+            }
+
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ClickedInside(plusIcon, Vector2{ screenWidth/2, screenHeight - 220, }) )
+            {
+                std::cout<<"clicked plus\n";
+                if (drawSpeed > 10) {
+                    drawSpeed -= 10;
+                    std::cout<<"drawing speed: "<<drawSpeed<<"\n";
+                }
+            }
+
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ClickedInside(minusIcon, Vector2{ screenWidth/2 + 80, screenHeight - 220, }))
+            {
+                std::cout<<"clicked minus\n";
+                if (drawSpeed < 200) {
+                    drawSpeed += 10;
+                    std::cout<<"drawing speed: "<<drawSpeed<<"\n";
+                }
+            }
+
         }
+
 
 
 
@@ -180,7 +205,7 @@ int main()
                 else if (tile->tileInstanceNumber > 0)
                 {
                     ++indexCounter;
-                    std::this_thread::sleep_for(std::chrono::milliseconds(70));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(drawSpeed));
                     break;
                 }
             }
@@ -209,8 +234,8 @@ bool ClickedInside(Texture2D image, Vector2 drawPosition)
     
     
     if (
-        mousePosition.x >= drawPosition.x && mousePosition.x <= drawPosition.x + image.width &&
-        mousePosition.y >= drawPosition.y && mousePosition.y <= drawPosition.y + image.height)
+        mousePosition.x >= drawPosition.x && mousePosition.x <= drawPosition.x + static_cast<float>(image.width) &&
+        mousePosition.y >= drawPosition.y && mousePosition.y <= drawPosition.y + static_cast<float>(image.height))
     {
         return true;
     }
