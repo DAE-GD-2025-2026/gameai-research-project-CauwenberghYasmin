@@ -5,20 +5,23 @@
 #include "Tile.h"
 #include <string>
 #include <algorithm>
+#include <thread>
+#include <chrono>
 
 void DrawLines(int screenWidth);
-void ReserveTiles(std::vector<Tile>& allTiles);
+void ReserveTiles(std::vector<std::vector<connect>>& allTiles);
 void Grids(int screenWidth, std::vector<Tile>& screenTiles);
 void LoadTileTextures(std::vector<Texture2D>& tilesTextures);
 Tile* GetLowestEnthropy(std::vector<Tile>& screenTiles);
 bool ClickedInside(Texture2D image, Vector2 drawPosition);
+int indexCounter{0};
 
 int main()
 {
     constexpr int screenWidth = 792;
     constexpr int screenHeight = 792 + 100;
     
-    std::vector<Tile> allTiles;
+    std::vector<std::vector<connect>> allTiles;
     std::vector<Tile> screenTiles;
 
     bool isDoneGenerating {true};
@@ -51,7 +54,7 @@ int main()
         {
             DrawTextureEx(TileSet, Vector2 {0,0}, 0, 6, WHITE);  //make actual tile scale 3
             DrawLines(screenWidth);
-            std::cout<<"draw sceen at start!\n";
+            //std::cout<<"draw sceen at start!\n";
         }
         DrawTextureEx(resetButton, Vector2{screenWidth/6, screenHeight - 100, } , 0, 1, WHITE); 
         DrawTextureEx(cretaeButton, Vector2{ screenWidth/2, screenHeight - 100, } , 0, 1, WHITE); 
@@ -88,12 +91,17 @@ int main()
              isDoneGenerating = true;
              std::cout<<"clicking reset button!";
         }
-        
+
+
+
+
         {
             //std::cout<<"generating!\n";
             std::stack<Tile*> stack;
             if (!isDoneGenerating)
             {
+                indexCounter = 0; //resetting indec for ordered drawing later!
+
                 //wavefunction collapse
                 int randNumber {GetRandomValue(0, screenTiles.size()-1)}; 
                 stack.push(&screenTiles[randNumber]);
@@ -114,7 +122,7 @@ int main()
                     {
                         if (neighbours[i] != nullptr && neighbours[i]->possibilities.size() != 0) //here go over all neighbours (except for the ones that have already collapsed)
                         {
-                            std::vector<int> directionPossibleTiles = allTiles[chosenTile-1].connections[i].tiles;  //check what the original options are (north of this tile without restrictions)
+                            std::vector<int> directionPossibleTiles = allTiles[chosenTile-1][i].tiles;  //check what the original options are (north of this tile without restrictions)
                             std::vector<int> limitedTiles {neighbours[i]->possibilities};//seeing what the direction can still be!
                             
                             std::vector<int> overlappingTiles;
@@ -136,29 +144,40 @@ int main()
                 isDoneGenerating = true;
         }
         
-        
+
+
+
+
+
         if (isDoneGenerating && !isDrawingBeginScreen)
         {
-            for (auto& tile: screenTiles)
+            //for (auto& tile: screenTiles)
             {
-                if( tile.tileInstanceNumber > 0)
+                if( screenTiles[indexCounter].tileInstanceNumber > 0 && screenTiles.size() > (indexCounter-1) )
                 {
-                    DrawTextureEx(tilesTextures[tile.tileInstanceNumber -1], tile.position, 0, 3, WHITE);
+                    DrawTextureEx(tilesTextures[screenTiles[indexCounter].tileInstanceNumber -1], screenTiles[indexCounter].position, 0, 3, WHITE);
+                    ++indexCounter;
+                   // std::this_thread::sleep_for(std::chrono::seconds(1));
                 }
                 else
                 {
-                    {
-                        isDoneGenerating = false; //this is a security mesure, if this triggers, it means the algorithme got stuck, forcing it to recalculate everything from scratch (vs unwinding!)
-                    } //this is pretty much impossible with our tileset!
+                    isDoneGenerating = false; //this is a security mesure, if this triggers, it means the algorithme got stuck, forcing it to recalculate everything from scratch (vs unwinding!)
+                    std::cout<<"Recreating, collapsing in the wrong order\n";
+                    //this is pretty much impossible with our tiles
+                    break;
                 }
             }
         }
-        
+
+
+
+
+
+
         if (isDrawingBeginScreen)
         {
             DrawTextureEx(TileSet, Vector2 {0,0}, 0, 6, WHITE);  //make actual tile scale 3
             DrawLines(screenWidth);
-            std::cout<<"DrawingBeginScreenCalled!";
         }
         
         EndDrawing();
@@ -196,125 +215,129 @@ void DrawLines(int screenWidth)
     DrawLine(0, SquareSize*1, SquareSize*4, SquareSize*1, WHITE);
 }
 
-void ReserveTiles(std::vector<Tile>& allTiles)
+void ReserveTiles(std::vector<std::vector<connect>>& allTiles) //use these vectors instead of the full class, save in size!
 {
     allTiles.reserve(16);
-    
-    Tile tile1 = Tile(1);
-    tile1.connections.emplace_back( connect{Directions::North, {3, 4}} );
-    tile1.connections.emplace_back( connect{Directions::East, {1,2,3,4,5,8,9,12,16}});
-    tile1.connections.emplace_back( connect{Directions::South, {5, 6, 7}});
-    tile1.connections.emplace_back( connect{Directions::West, {1,2, 3, 4, 7, 8, 11, 12, 16}});
-    allTiles.emplace_back(tile1);
 
 
-    Tile tile2 = Tile(2);
-    tile2.connections.emplace_back( connect{Directions::North, {3, 4}} );
-    tile2.connections.emplace_back( connect{Directions::East, {1, 2,3,4,5,8,9,12,16}});
-    tile2.connections.emplace_back( connect{Directions::South, {5, 6, 7}});
-    tile2.connections.emplace_back( connect{Directions::West, {1,2, 3, 4, 7, 8, 11, 12, 16}});
-    allTiles.emplace_back(tile2);
+    allTiles.emplace_back(std::vector<connect>{
+       connect{Directions::North, {3, 4}},
+       connect{Directions::East, {1,2,3,4,5,8,9,12,16}},
+       connect{Directions::South, {5, 6, 7}},
+       connect{Directions::West, {1,2, 3, 4, 7, 8, 11, 12, 16}}
+    });
 
-    Tile tile3 = Tile(3);
-    tile3.connections.emplace_back( connect{Directions::North, {3, 4}} );
-    tile3.connections.emplace_back( connect{Directions::East, {1, 2, 3, 4, 5, 8, 9, 12, 16}});
-    tile3.connections.emplace_back( connect{Directions::South, {1, 2, 3, 4, 5, 6, 7, 8}});
-    tile3.connections.emplace_back( connect{Directions::West, {1, 2, 3, 4, 7, 8, 11, 12, 16}});
-    allTiles.emplace_back(tile3);
+    allTiles.emplace_back((std::vector<connect>{ //tile 2
+        connect{Directions::North, {3, 4}},
+        connect{Directions::East, {1, 2,3,4,5,8,9,12,16}},
+        connect{Directions::South, {5, 6, 7}},
+        connect{Directions::West, {1,2, 3, 4, 7, 8, 11, 12, 16}}
+        }));
 
-    Tile tile4 = Tile(4);
-    tile4.connections.emplace_back( connect{Directions::North, {3}} ); //no fire above fire (personal preference)
-    tile4.connections.emplace_back( connect{Directions::East, {1, 2, 3, 4, 5, 8, 9, 12, 16}});
-    tile4.connections.emplace_back( connect{Directions::South, {1, 2, 3, 5, 6, 7, 8}});
-    tile4.connections.emplace_back( connect{Directions::West, {1, 2, 3, 4, 7, 8, 11, 12, 16}});
-    allTiles.emplace_back(tile4);
+    allTiles.emplace_back((std::vector<connect>{//tile 3
+    connect{Directions::North, {3, 4}},
+    connect{Directions::East, {1, 2,3,4,5,8,9,12,16}},
+    connect{Directions::South, {1, 2, 3, 4, 5, 6, 7, 8}},
+        connect{Directions::West, {1, 2, 3, 4, 7, 8, 11, 12, 16}}
+    }));
 
+    allTiles.emplace_back((std::vector<connect>{ //4
+        connect{Directions::North, {3}},
+        connect{Directions::East, {1,2,3,4,5,8,9,12,16}},
+        connect{Directions::South, {1, 2, 3, 5, 6, 7, 8}},
+        connect{Directions::West, {1, 2, 3, 4, 7, 8, 11, 12, 16}}
+    }));
 
-    Tile tile5 = Tile(5);
-    tile5.connections.emplace_back( connect{Directions::North, {1,2,3,4,16}} );
-    tile5.connections.emplace_back( connect{Directions::East, {6, 7, 13}});
-    tile5.connections.emplace_back( connect{Directions::South, {9, 13}});
-    tile5.connections.emplace_back( connect{Directions::West, {7, 1, 2, 3, 4, 8, 12, 16}});
-    allTiles.emplace_back(tile5);
-
-        Tile tile6 = Tile(6);
-    tile6.connections.emplace_back( connect{Directions::North, {1,2,3,4,16}} );
-    tile6.connections.emplace_back( connect{Directions::East, {6, 7, 13}});
-    tile6.connections.emplace_back( connect{Directions::South, {10, 14}});
-    tile6.connections.emplace_back( connect{Directions::West, {5, 6, 15}});
-    allTiles.emplace_back(tile6);
-
-
-        Tile tile7 = Tile(7);
-    tile7.connections.emplace_back( connect{Directions::North, {1,2,3,4,16}} );
-    tile7.connections.emplace_back( connect{Directions::East, {5, 1, 2, 3, 4, 8, 12, 16, 9}});
-    tile7.connections.emplace_back( connect{Directions::South, {11,15}});
-    tile7.connections.emplace_back( connect{Directions::West, {5, 6, 15}});
-    allTiles.emplace_back(tile7);
-
-        Tile tile8 = Tile(8);
-    tile8.connections.emplace_back( connect{Directions::North, {3, 4}} );
-    tile8.connections.emplace_back( connect{Directions::East, {5,1,2,3,4,16,12,8, 9}});
-    tile8.connections.emplace_back( connect{Directions::South, {12, 16}});
-    tile8.connections.emplace_back( connect{Directions::West, {7,11,1,2,3,4,8,12, 16}});
-    allTiles.emplace_back(tile8);
-
-        Tile tile9 = Tile(9);
-    tile9.connections.emplace_back( connect{Directions::North, {9, 5}} );
-    tile9.connections.emplace_back( connect{Directions::East, {10,14,11,15}});
-    tile9.connections.emplace_back( connect{Directions::South, {9,13}});
-    tile9.connections.emplace_back( connect{Directions::West, {11, 7, 1, 2, 3, 4, 16, 12, 8}});
-    allTiles.emplace_back(tile9);
-
-        Tile tile10 = Tile(10);
-    tile10.connections.emplace_back( connect{Directions::North, {10, 14, 6, 13, 15}} );
-    tile10.connections.emplace_back( connect{Directions::East, {10,14,11,15}});
-    tile10.connections.emplace_back( connect{Directions::South, {10, 14}});
-    tile10.connections.emplace_back( connect{Directions::West, {9, 10, 14, 13}});
-    allTiles.emplace_back(tile10);
-
-        Tile tile11 = Tile(11);
-    tile11.connections.emplace_back( connect{Directions::North, {7, 11}} );
-    tile11.connections.emplace_back( connect{Directions::East, {16, 12, 8, 4, 1, 2, 3, 9}});
-    tile11.connections.emplace_back( connect{Directions::South, {11, 15}});
-    tile11.connections.emplace_back( connect{Directions::West, {9, 10, 14, 13}});
-    allTiles.emplace_back(tile11);
-
-        Tile tile12 = Tile(12);
-    tile12.connections.emplace_back( connect{Directions::North, {12, 8}} );
-    tile12.connections.emplace_back( connect{Directions::East, {1,2,3,4, 5, 9, 12, 16, 8}});
-    tile12.connections.emplace_back( connect{Directions::South, {12, 16}});
-    tile12.connections.emplace_back( connect{Directions::West, {1,2,3,4, 7, 11, 8, 12, 16}});
-    allTiles.emplace_back(tile12);
-
-        Tile tile13 = Tile(13);
-    tile13.connections.emplace_back( connect{Directions::North, {9,5}} );
-    tile13.connections.emplace_back( connect{Directions::East, {10,14,11,15}});
-    tile13.connections.emplace_back( connect{Directions::South, {10, 14}});
-    tile13.connections.emplace_back( connect{Directions::West, {5,6, 15}});
-    allTiles.emplace_back(tile13);
+    allTiles.emplace_back((std::vector<connect>{ //5
+        connect{Directions::North, {1,2,3,4,16}},
+        connect{Directions::East, {6, 7, 13}},
+        connect{Directions::South, {9, 13}},
+        connect{Directions::West, {7, 1, 2, 3, 4, 8, 12, 16}}
+    }));
 
 
-        Tile tile14 = Tile(14);
-    tile14.connections.emplace_back( connect{Directions::North,{10,6, 13, 15}} );
-    tile14.connections.emplace_back( connect{Directions::East, {14,10,15,11}});
-    tile14.connections.emplace_back( connect{Directions::South, {14, 10}});
-    tile14.connections.emplace_back( connect{Directions::West, {13, 9, 10, 14}});
-    allTiles.emplace_back(tile14);
+    allTiles.emplace_back((std::vector<connect>{ //6
+        connect{Directions::North, {1,2,3,4,16}},
+        connect{Directions::East, {6, 7, 13}},
+        connect{Directions::South, {10, 14}},
+        connect{Directions::West, {5,6,15}}
+    }));
 
-        Tile tile15 = Tile(15);
-    tile15.connections.emplace_back( connect{Directions::North,{11, 7} });
-    tile15.connections.emplace_back( connect{Directions::East, {6,7, 13}});
-    tile15.connections.emplace_back( connect{Directions::South, {14, 10}});
-    tile15.connections.emplace_back( connect{Directions::West, {13, 9, 10, 14}});
-    allTiles.emplace_back(tile15);
 
-        Tile tile16 = Tile(16);
-    tile16.connections.emplace_back( connect{Directions::North, {12, 8}} );
-    tile16.connections.emplace_back( connect{Directions::East, {16, 12, 8, 4, 1, 2, 3, 9, 5}});
-    tile16.connections.emplace_back( connect{Directions::South, {5, 6, 7}});
-    tile16.connections.emplace_back( connect{Directions::West, {16, 12, 8, 4, 1, 2, 3, 11, 7}});
-    allTiles.emplace_back(tile16);
+
+    allTiles.emplace_back((std::vector<connect>{ //7
+        connect{Directions::North, {1,2,3,4,16}},
+        connect{Directions::East, {5, 1, 2, 3, 4, 8, 12, 16, 9}},
+        connect{Directions::South, {11,15}},
+        connect{Directions::West, {5, 6, 15}}
+    }));
+
+    allTiles.emplace_back((std::vector<connect>{ //8
+      connect{Directions::North, {3,4}},
+      connect{Directions::East, {5,1,2,3,4,16,12,8, 9}},
+      connect{Directions::South, {12, 16}},
+      connect{Directions::West, {7,11,1,2,3,4,8,12, 16}}
+  }));
+
+
+    allTiles.emplace_back((std::vector<connect>{ //9
+          connect{Directions::North, {9, 5}},
+          connect{Directions::East, {10,14,11,15}},
+          connect{Directions::South, {9,13}},
+          connect{Directions::West, {11, 7, 1, 2, 3, 4, 16, 12, 8}}
+      }));
+
+    allTiles.emplace_back((std::vector<connect>{ //10
+         connect{Directions::North, {10, 14, 6, 13, 15}},
+         connect{Directions::East, {10,14,11,15}},
+         connect{Directions::South, {10,14}},
+         connect{Directions::West, {9, 10, 14, 13}}
+     }));
+
+
+        allTiles.emplace_back((std::vector<connect>{ //11
+         connect{Directions::North, {9, 10, 14, 13}},
+         connect{Directions::East, {16, 12, 8, 4, 1, 2, 3, 9}},
+         connect{Directions::South, {11, 15}},
+         connect{Directions::West, {9, 10, 14, 13}}
+        }));
+
+    allTiles.emplace_back((std::vector<connect>{ //12
+         connect{Directions::North, {12,8}},
+         connect{Directions::East, {1,2,3,4, 5, 9, 12, 16, 8}},
+         connect{Directions::South, {12, 16}},
+         connect{Directions::West, {1,2,3,4, 7, 11, 8, 12, 16}}
+     }));
+
+    allTiles.emplace_back((std::vector<connect>{ //13
+        connect{Directions::North, {9,5}},
+        connect{Directions::East, {10,14,11,15}},
+        connect{Directions::South, {10, 14}},
+        connect{Directions::West, {5,6, 15}}
+    }));
+
+
+    allTiles.emplace_back((std::vector<connect>{ //14
+        connect{Directions::North, {10,6, 13, 15}},
+        connect{Directions::East, {10,14,11,15}},
+        connect{Directions::South, {10, 14}},
+        connect{Directions::West, {13, 9, 10, 14}}
+    }));
+
+    allTiles.emplace_back((std::vector<connect>{ //15
+        connect{Directions::North, {11, 7}},
+        connect{Directions::East, {6,7,13}},
+        connect{Directions::South, {10, 14}},
+        connect{Directions::West, {13, 9, 10, 14}}
+    }));
+
+    allTiles.emplace_back((std::vector<connect>{ //16
+            connect{Directions::North, {12,8}},
+            connect{Directions::East, {16, 12, 8, 4, 1, 2, 3, 9, 5}},
+            connect{Directions::South, {5, 6, 7}},
+            connect{Directions::West, {16, 12, 8, 4, 1, 2, 3, 11, 7}}
+        }));
+
 }
 
 void Grids(int screenWidth, std::vector<Tile>& screenTiles)
