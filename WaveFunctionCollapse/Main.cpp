@@ -146,9 +146,20 @@ int main()
                 }
                 isDrawingBeginScreen = false;
             }
-                isDoneGenerating = true;
+
+
+            isDoneGenerating = true;
+
+            for (auto& tile: screenTiles) //already checking here so we don't have to do it each frame
+            {
+                if( tile.tileInstanceNumber <= 0) {
+                    isDoneGenerating = false; //this is a security mesure, if this triggers, it means the algorithme got stuck, forcing it to recalculate everything
+                    std::cout<<"Recreating, collapsing in the wrong order\n";
+                    break;
+                }
+            }
         }
-        
+
 
 
 
@@ -166,17 +177,10 @@ int main()
                 {
                     DrawTextureEx(tilesTextures[tile->tileInstanceNumber -1], tile->position, 0, 3, WHITE);
                 }
-                else if (tile->tileInstanceNumber > 0 && counter >= indexCounter)
+                else if (tile->tileInstanceNumber > 0)
                 {
                     ++indexCounter;
-                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                    break;
-                }
-                else
-                {
-                    isDoneGenerating = false; //this is a security mesure, if this triggers, it means the algorithme got stuck, forcing it to recalculate everything from scratch (vs unwinding!)
-                    std::cout<<"Recreating, collapsing in the wrong order\n";
-                    //this is pretty much impossible with our tiles
+                    std::this_thread::sleep_for(std::chrono::milliseconds(70));
                     break;
                 }
             }
