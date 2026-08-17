@@ -36,16 +36,19 @@ int main()
     Texture2D cretaeButton =  LoadTexture("Resources/Create.png");
     std::vector<Texture2D> tilesTextures;
     
+    std::vector< Tile*> orderToDrawTiles{};
+
 
     while (!WindowShouldClose())
     {
         
         if (tilesTextures.empty())
         {
-             LoadTileTextures(tilesTextures);
+            LoadTileTextures(tilesTextures);
             ReserveTiles(allTiles);
             Grids(screenWidth, screenTiles);
         }
+
         BeginDrawing();
         constexpr Color darkBlue = { 10, 10, 10, 255 };
         ClearBackground(darkBlue);
@@ -100,7 +103,8 @@ int main()
             std::stack<Tile*> stack;
             if (!isDoneGenerating)
             {
-                indexCounter = 0; //resetting indec for ordered drawing later!
+                orderToDrawTiles.clear();
+                indexCounter = 0;
 
                 //wavefunction collapse
                 int randNumber {GetRandomValue(0, screenTiles.size()-1)}; 
@@ -109,7 +113,8 @@ int main()
                 while (GetLowestEnthropy(screenTiles) != nullptr) //working with stack, maybe better by checking which of map lowest enthropy and != 0??
                 {
                     Tile* currentTile = GetLowestEnthropy(screenTiles);
-                    
+                    orderToDrawTiles.push_back(currentTile);
+
                     int randPossibility {GetRandomValue(0, currentTile->possibilities.size()-1)};
                     int chosenTile = currentTile->possibilities[randPossibility];
                     DrawTextureEx(tilesTextures[chosenTile-1], currentTile->position, 0, 3, WHITE);
@@ -151,13 +156,21 @@ int main()
 
         if (isDoneGenerating && !isDrawingBeginScreen)
         {
-            //for (auto& tile: screenTiles)
+            int counter {-1};
+
+            for (auto& tile: orderToDrawTiles)
             {
-                if( screenTiles[indexCounter].tileInstanceNumber > 0 && screenTiles.size() > (indexCounter-1) )
+                ++counter;
+
+                if( tile->tileInstanceNumber > 0 && counter < indexCounter)
                 {
-                    DrawTextureEx(tilesTextures[screenTiles[indexCounter].tileInstanceNumber -1], screenTiles[indexCounter].position, 0, 3, WHITE);
+                    DrawTextureEx(tilesTextures[tile->tileInstanceNumber -1], tile->position, 0, 3, WHITE);
+                }
+                else if (tile->tileInstanceNumber > 0 && counter >= indexCounter)
+                {
                     ++indexCounter;
-                   // std::this_thread::sleep_for(std::chrono::seconds(1));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                    break;
                 }
                 else
                 {
