@@ -80,6 +80,12 @@ Now applying all of this to my project, here are some different results:
 
 <img  height="500" alt="image" src="https://github.com/user-attachments/assets/60bcff48-43a2-4f0c-98ce-dc6c0484c02b" />
 
+
+#Added functionality
+
+The project has now a speed variable, which the user can interact with. This way you can see the wave function collapse unfold and which tiles get picked in which order!
+
+
 ## Variations
 To further customize generation, such as increasing the frequency of trees or decreasing the appearance of rocks, you can implement tile weights. 
 By assigning weights, you can control which tiles are more likely to be selected during the collapse phase.
